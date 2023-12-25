@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { UserService } from './user.service';
+import { users } from './users';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,20 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Angular-API-Caching';
+  searchTerm: string = '';
+  users: users[] = [];
+
+  constructor(private userSerice: UserService) { }
+
+  search() {
+    this.users = [];
+    this.userSerice.getUsername(this.searchTerm).subscribe(
+      (data) => {
+        this.users = data;
+      },
+      (error) => {
+        console.error('Error fetching username:', error);
+      }
+    );
+  }
 }
